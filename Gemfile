@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 ruby '3.2.2'
 
+# gem for enabling CORs (cross origin resource sharing) for effecting communication between frontend and backend links
+gem 'rack-cors'
+
 # Ruby linters for enforcing linter rules for ruby community.
 gem 'rubocop', '>= 1.0', '< 2.0'
 
