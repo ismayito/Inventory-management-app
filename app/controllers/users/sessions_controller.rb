@@ -1,6 +1,8 @@
 class Users::SessionsController < Devise::SessionsController
+    include RackSessionsFix
   # before_action :configure_sign_in_params, only: [:create]
-    skip_action :authenticate_user!
+    skip_before_action :authenticate_user!
+
 
   # GET /resource/sign_in
   # def new

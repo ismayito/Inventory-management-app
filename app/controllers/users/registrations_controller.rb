@@ -1,7 +1,10 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  include RackSessionsFix
+
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  skip_action :authenticate_user!
+  # skip_before_action :authenticate_user!
+
 
   # GET /resource/sign_up
   # def new
@@ -59,19 +62,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super(resource)
   # end
   respond_to :json
-
+  
   private
 
-  def respond_with(current_user, _opts = {})
+  def respond_with(resource, _opts = {})
     if resource.persisted?
       render json: {
-        status: { code: 200, message: 'Signed up successfully.' },
+        status: {code: 200, message: 'Signed up successfully.'},
         data: UserSerializer.new(current_user).serializable_hash[:data][:attributes]
       }
     else
       render json: {
-        status: { message: "User couldn't be created successfully. #{current_user.errors.full_messages.to_sentence}" }
+        status: {message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}"}
       }, status: :unprocessable_entity
     end
   end
+
+  def sign_up_params
+  params.require(:user).permit(:name, :email, :password, :password_confirmation)
+end
 end
