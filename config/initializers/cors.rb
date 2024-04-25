@@ -10,7 +10,8 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     origins "*" # Remember to change this when deploying or to a specific front-end development domain
 
     resource "*",
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      headers: ["Authorization"],
+      expose: ["Authorization"],
+      methods: [:get, :post, :put, :patch, :delete, :options, :show, :head]
   end
 end
