@@ -5,6 +5,15 @@ ruby '3.2.2'
 # gem for enabling CORs (cross origin resource sharing) for effecting communication between frontend and backend links
 gem 'rack-cors'
 
+# gem for enabling authentication for rails
+gem 'devise'
+
+# gem for enabling authentication and tracking authenticated user using jwt
+gem 'devise-jwt'
+
+# gem for formating return object data from the rails app
+gem 'jsonapi-serializer'
+
 # Ruby linters for enforcing linter rules for ruby community.
 gem 'rubocop', '>= 1.0', '< 2.0'
 
