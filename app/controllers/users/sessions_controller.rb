@@ -1,8 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
-    include RackSessionsFix
+  include RackSessionsFix
   # before_action :configure_sign_in_params, only: [:create]
-    skip_before_action :authenticate_user!
-
+  skip_before_action :authenticate_user!
 
   # GET /resource/sign_in
   # def new
@@ -29,13 +28,22 @@ class Users::SessionsController < Devise::SessionsController
 
   private
 
-  def respond_with(current_user, _opts = {})
-    render json: {
-      status: {
-        code: 200, message: 'Logged in successfully.',
-        data: { user: UserSerializer.new(current_user).serializable_hash[:data][:attributes] }
-      }
-    }, status: :ok
+  def respond_with(resource, _opts = {})
+    if resource.persisted?
+      render json: {
+        status: {
+          code: 200, message: 'Logged in successfully.',
+          data: { user: UserSerializer.new(resource).serializable_hash[:data][:attributes] }
+        }
+      }, status: :ok
+    else
+      error = resource.errors.full_messages.to_sentence
+      render json: {
+        status: {
+          message: "User couldn't be logged in. #{error}"
+        }
+      }, status: :unprocessable_entity
+    end
   end
 
   def respond_to_on_destroy
